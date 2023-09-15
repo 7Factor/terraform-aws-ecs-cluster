@@ -95,3 +95,13 @@ variable "schedule_timezone" {
   default     = "America/New_York"
   description = "The timezone inside of which to run the patch windows. Defaults to US eastern."
 }
+
+variable "stopped_ecs_task_log_group" {
+  default     = "/ecs/stopped-tasks"
+  description = "The log group to use to log stopped task information."
+}
+
+variable "stopped_ecs_task_log_retention_days" {
+  default     = 30
+  description = "The number of days to retain stopped task logs."
+}
