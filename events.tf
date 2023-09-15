@@ -77,7 +77,7 @@ data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
     condition {
       test     = "ArnEquals"
       values   = [
-        aws_cloudwatch_log_group.ecs_stopped_tasks.arn
+        aws_cloudwatch_event_rule.ecs_task_stopped.arn
       ]
       variable = "aws:SourceArn"
     }
