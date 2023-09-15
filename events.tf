@@ -28,7 +28,7 @@ resource "aws_cloudwatch_event_rule" "ecs_task_stopped" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_stopped_tasks" {
-  name = "aws/events/${var.stopped_ecs_task_log_group}"
+  name = "/aws/events/${var.stopped_ecs_task_log_group}"
 }
 
 resource "aws_cloudwatch_event_target" "log_ecs_task_stopped" {
