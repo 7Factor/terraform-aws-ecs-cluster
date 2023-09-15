@@ -45,7 +45,6 @@ data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
     ]
 
     resources = [
-      aws_cloudwatch_log_group.ecs_stopped_tasks.arn,
       "${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*"
     ]
 
@@ -64,8 +63,6 @@ data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
     ]
 
     resources = [
-      aws_cloudwatch_log_group.ecs_stopped_tasks.arn,
-      "${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*",
       "${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*:*"
     ]
 
