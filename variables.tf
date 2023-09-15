@@ -97,7 +97,7 @@ variable "schedule_timezone" {
 }
 
 variable "stopped_ecs_task_log_group" {
-  default     = "/ecs/stopped-tasks"
+  default     = "ecs/stopped-tasks"
   description = "The log group to use to log stopped task information."
 }
 
