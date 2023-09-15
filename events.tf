@@ -35,3 +35,28 @@ resource "aws_cloudwatch_event_target" "log_ecs_task_stopped" {
   rule = aws_cloudwatch_event_rule.ecs_task_stopped.name
   arn  = aws_cloudwatch_log_group.ecs_stopped_tasks.arn
 }
+
+data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
+  statement {
+    effect  = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = [
+        "events.amazonaws.com",
+        "delivery.logs.amazonaws.com"
+      ]
+    }
+
+    sid = "AllowCloudWatchToPutEventsInCloudWatchEcsStoppedTasksLogGroup"
+
+    resources = [
+      aws_cloudwatch_log_group.ecs_stopped_tasks.arn
+    ]
+  }
+  version = "2012-10-17"
+}
