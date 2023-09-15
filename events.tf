@@ -39,10 +39,31 @@ resource "aws_cloudwatch_event_target" "log_ecs_task_stopped" {
 
 data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
   statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream"
+    ]
+
+    resources = [
+      "${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*"
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = [
+        "events.amazonaws.com",
+        "delivery.logs.amazonaws.com"
+      ]
+    }
+  }
+  statement {
     effect  = "Allow"
     actions = [
-      "logs:CreateLogStream",
       "logs:PutLogEvents"
+    ]
+
+    resources = [
+      "${aws_cloudwatch_log_group.ecs_stopped_tasks.arn}:*:*"
     ]
 
     principals {
@@ -53,11 +74,17 @@ data "aws_iam_policy_document" "ecs_stopped_tasks_log_group_policy" {
       ]
     }
 
-    sid = "AllowCloudWatchToPutEventsInCloudWatchEcsStoppedTasksLogGroup"
-
-    resources = [
-      aws_cloudwatch_log_group.ecs_stopped_tasks.arn
-    ]
+    condition {
+      test     = "ArnEquals"
+      values   = [
+        aws_cloudwatch_log_group.ecs_stopped_tasks.arn
+      ]
+      variable = "aws:SourceArn"
+    }
   }
-  version = "2012-10-17"
+}
+
+resource "aws_cloudwatch_log_resource_policy" "ecs_stopped_tasks" {
+  policy_document = data.aws_iam_policy_document.ecs_stopped_tasks_log_group_policy.json
+  policy_name     = "ecs-stopped-tasks-log-publishing-policy"
 }
