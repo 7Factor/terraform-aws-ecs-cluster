@@ -17,6 +17,14 @@ resource "aws_security_group" "ecs_accessible_sg" {
     cidr_blocks = [var.lb_ingress_cidr]
   }
 
+  ingress {
+    description = "Allow NFS access from the ECS cluster"
+    from_port   = "2049"
+    to_port     = "2049"
+    protocol    = "tcp"
+    cidr_blocks = [var.lb_ingress_cidr]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
